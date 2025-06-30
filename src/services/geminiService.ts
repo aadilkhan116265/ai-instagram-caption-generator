@@ -71,12 +71,16 @@ export const generateInstagramContent = async (topic: string, imageBase64: strin
       },
     });
 
-    let jsonStr = response.text.trim();
-    const fenceRegex = /^```(\w*)?\s*\n?(.*?)\n?\s*```$/s;
-    const match = jsonStr.match(fenceRegex);
-    if (match && match[2]) {
-      jsonStr = match[2].trim();
-    }
+   const rawText = response.text?.trim();
+if (!rawText) throw new Error("No response text received from AI.");
+let jsonStr = rawText;
+
+const fenceRegex = /^```(\w*)?\s*\n?(.*?)\n?\s*```$/s;
+const match = jsonStr.match(fenceRegex);
+if (match && match[2]) {
+  jsonStr = match[2].trim();
+}
+
     
     const parsedData = JSON.parse(jsonStr) as GeneratedContent;
 
