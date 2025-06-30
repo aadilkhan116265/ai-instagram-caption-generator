@@ -1,0 +1,8 @@
+{
+  "name": "AI Instagram Caption Generator",
+  "description": "An AI-powered tool to generate creative Instagram captions and relevant hashtags from a topic or an image, helping you boost your social media presence.",
+  "requestFramePermissions": [
+    "camera"
+  ],
+  "prompt": ""
+}
