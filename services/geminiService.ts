@@ -96,6 +96,6 @@ export const generateInstagramContent = async (topic: string, imageBase64: strin
     if (error instanceof Error && error.message.includes("JSON")) {
       throw new Error("Failed to parse the AI's response. The format was invalid. Please try again.");
     }
-    throw new Error("Failed to generate content from AI. Please check your connection or API key and try again.");
+    throw new Error("Failed to generate content . Please check your connection and try again.");
   }
 };
