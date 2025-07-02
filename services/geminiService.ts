@@ -25,14 +25,14 @@ function buildPrompt(
 
   // Add style preference to the prompt based on the new parameter
   if (captionStyle === 'professional') {
-    prompt += ` The caption should be professional in tone, suitable for a brand or business.`;
-  } else { // 'basic'
-    prompt += ` The caption should be basic, simple, and straightforward, suitable for a personal post.`;
-  }
+    prompt += ` The caption should have a sophisticated and polished tone, suitable for students or individual professionals sharing personal insights or academic content. Use advanced and high-level English vocabulary, but avoid overly corporate or marketing jargon.`; // <-- UPDATED LINE
+} else { // 'basic'
+    prompt += ` The caption should be basic, simple, and straightforward, suitable for a personal post. Use common, easy-to-understand English words.`;
+}
 
   // Add length preference to the prompt based on the new parameter
   if (captionLength === 'small') {
-    prompt += ` Keep the captions concise and short, ideally one to two sentences.`;
+    prompt += ` Each caption must be extremely short, ideally around 3 to 5 words maximum. Do not exceed this length.`;
   } else { // 'big'
     prompt += ` Make the captions detailed and comprehensive, potentially including multiple sentences or paragraphs.`;
   }
