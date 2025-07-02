@@ -8,14 +8,36 @@ if (!import.meta.env.VITE_API_KEY) {
 
 const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
 
-function buildPrompt(topic: string, hasImage: boolean): string {
+// UPDATED: buildPrompt now accepts captionStyle and captionLength
+function buildPrompt(
+  topic: string,
+  hasImage: boolean,
+  captionStyle: 'basic' | 'professional', // NEW PARAMETER
+  captionLength: 'small' | 'big'          // NEW PARAMETER
+): string {
   const imageContext = hasImage
     ? "based on the provided image and the topic below"
     : "based on the topic below";
 
-  return `
-    You are an expert social media marketing assistant specializing in Instagram. 
-    Your task is to generate creative and engaging content for an Instagram post ${imageContext}.
+  let prompt = `
+    You are an expert social media marketing assistant specializing in Instagram.
+    Your task is to generate creative and engaging content for an Instagram post ${imageContext}.`;
+
+  // Add style preference to the prompt based on the new parameter
+  if (captionStyle === 'professional') {
+    prompt += ` The caption should be professional in tone, suitable for a brand or business.`;
+  } else { // 'basic'
+    prompt += ` The caption should be basic, simple, and straightforward, suitable for a personal post.`;
+  }
+
+  // Add length preference to the prompt based on the new parameter
+  if (captionLength === 'small') {
+    prompt += ` Keep the captions concise and short, ideally one to two sentences.`;
+  } else { // 'big'
+    prompt += ` Make the captions detailed and comprehensive, potentially including multiple sentences or paragraphs.`;
+  }
+
+  prompt += `
 
     Topic: "${topic || (hasImage ? 'Describe the main subject and mood of the image.' : 'General post')}"
 
@@ -41,11 +63,19 @@ function buildPrompt(topic: string, hasImage: boolean): string {
       ]
     }
   `;
+  return prompt;
 }
 
-export const generateInstagramContent = async (topic: string, imageBase64: string | null): Promise<GeneratedContent> => {
-  const prompt = buildPrompt(topic, !!imageBase64);
-  
+// UPDATED: generateInstagramContent now accepts style and length
+export const generateInstagramContent = async (
+  topic: string,
+  imageBase64: string | null,
+  captionStyle: 'basic' | 'professional', // NEW PARAMETER
+  captionLength: 'small' | 'big'          // NEW PARAMETER
+): Promise<GeneratedContent> => {
+  // Pass the new parameters to buildPrompt
+  const prompt = buildPrompt(topic, !!imageBase64, captionStyle, captionLength);
+
   const contents = [];
 
   if (imageBase64) {
@@ -96,6 +126,7 @@ export const generateInstagramContent = async (topic: string, imageBase64: strin
     if (error instanceof Error && error.message.includes("JSON")) {
       throw new Error("Failed to parse the AI's response. The format was invalid. Please try again.");
     }
-    throw new Error("Failed to generate content . Please check your connection and try again.");
+    // Updated error message to be more generic, as discussed
+    throw new Error("Failed to generate content. Please try again or check your internet connection.");
   }
 };
