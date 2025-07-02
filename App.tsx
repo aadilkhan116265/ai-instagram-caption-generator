@@ -3,7 +3,7 @@ import { Header } from './components/Header';
 import { InputForm } from './components/InputForm';
 import { ResultsDisplay } from './components/ResultsDisplay';
 import { LoadingSpinner } from './components/LoadingSpinner';
-import { generateInstagramContent } from './services/geminiService';
+import { generateInstagramContent } from './services/geminiService'; // Your service call
 import type { GeneratedContent } from './types';
 import { Footer } from './components/Footer';
 import { IntroSection } from './components/IntroSection';
@@ -15,7 +15,11 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleGenerate = useCallback(async () => {
+  // UPDATED: handleGenerate now accepts style and length parameters
+  const handleGenerate = useCallback(async (
+    style: 'basic' | 'professional', // <-- NEW PARAMETER
+    length: 'small' | 'big'          // <-- NEW PARAMETER
+  ) => {
     if (!topic && !image) {
       setError('Please provide a topic or an image to generate content.');
       return;
@@ -25,7 +29,8 @@ const App: React.FC = () => {
     setGeneratedContent(null);
 
     try {
-      const result = await generateInstagramContent(topic, image);
+      // UPDATED: Pass style and length to your service function
+      const result = await generateInstagramContent(topic, image, style, length);
       setGeneratedContent(result);
     } catch (err) {
       console.error(err);
@@ -33,19 +38,20 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [topic, image]);
+  }, [topic, image]); // Depend on topic and image for useCallback
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-slate-900 to-indigo-900 text-white font-sans">
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Header />
         <main>
+          {/* InputForm's onGenerate prop is now handleGenerate, which accepts the new parameters */}
           <InputForm
             topic={topic}
             setTopic={setTopic}
             image={image}
             setImage={setImage}
-            onGenerate={handleGenerate}
+            onGenerate={handleGenerate} // This handleGenerate now expects the two new parameters from InputForm
             isLoading={isLoading}
           />
 
@@ -66,7 +72,7 @@ const App: React.FC = () => {
           {generatedContent ? (
             <ResultsDisplay content={generatedContent} />
           ) : (
-             !isLoading && !error && <IntroSection />
+            !isLoading && !error && <IntroSection />
           )}
 
         </main>
