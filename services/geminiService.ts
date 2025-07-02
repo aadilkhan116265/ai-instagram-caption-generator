@@ -29,22 +29,21 @@ function buildPrompt(
     - Descriptive, painting a vivid picture or conveying a clear message.
     - Optimized for Instagram's tone and audience.
     - Thought-provoking, inspiring, or entertaining.
-    - Use relevant emojis sparingly and thoughtfully within the captions, but only if they enhance the message and fit the overall tone.
+    - Each caption MUST include 1-3 highly relevant and expressive emojis. Place them strategically at the beginning, end, or within the text to enhance the message and fit the overall tone.
     `;
 
   // Add style preference to the prompt based on the new parameter
   if (captionStyle === 'professional') {
-    prompt += ` The caption should have a sophisticated and polished tone, suitable for students or individual professionals sharing personal insights or academic content. Use advanced and high-level English vocabulary, but avoid overly corporate or marketing jargon.`;
-  } else { // 'basic'
-    prompt += ` The caption should be basic, simple, and straightforward, suitable for a personal post. Use common, easy-to-understand English words.`;
-  }
+  prompt += ` The caption should maintain a refined, intelligent tone. It must be appropriate for professionals, students, or individuals aiming to share thoughtful or inspiring content. Use elevated vocabulary and sentence structure, but keep it readable and relatable. Avoid promotional or corporate-sounding language.`;
+} else { // 'basic'
+  prompt += ` The caption should be casual, personal, and easy to understand. Use simple everyday language suitable for general Instagram users sharing personal photos. Keep the tone warm, natural, and relatable.`;
+}
 
-  // Add length preference to the prompt based on the new parameter
-  if (captionLength === 'small') {
-    prompt += ` Each caption must be extremely short, ideally around 5 to 6 words maximum. Do not exceed this length.`;
-  } else { // 'big'
-    prompt += ` Make the captions detailed and comprehensive, potentially including multiple sentences or paragraphs. Ensure they are still easy to read with good flow.`;
-  }
+if (captionLength === 'small') {
+  prompt += ` Each caption must be very short — ideally a single phrase or sentence of no more than 5 to 6 words. Keep it catchy, but concise.`;
+} else { // 'big'
+  prompt += ` Each caption should be more detailed and expressive, consisting of multiple sentences if needed. Ensure smooth flow and emotional engagement while keeping the text easy to read.`;
+}
 
   prompt += `
 
