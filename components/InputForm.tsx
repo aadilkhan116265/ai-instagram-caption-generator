@@ -16,13 +16,13 @@ export const InputForm: React.FC<InputFormProps> = ({ topic, setTopic, image, se
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="flex flex-col">
           <label htmlFor="topic" className="mb-2 font-semibold text-indigo-300">
-            1. Describe your post
+            1. Describe your post / अपने पोस्ट का वर्णन करें
           </label>
           <textarea
             id="topic"
             value={topic}
             onChange={(e) => setTopic(e.target.value)}
-            placeholder="e.g., 'A beautiful sunset over the mountains'"
+            placeholder="e.g., 'Drop the vibe. I’ll drop the fire caption. 🔥'"
             className="flex-grow w-full px-4 py-3 bg-gray-900 border-2 border-gray-700 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-300 resize-none"
             rows={6}
           />
@@ -30,7 +30,7 @@ export const InputForm: React.FC<InputFormProps> = ({ topic, setTopic, image, se
         
         <div className="flex flex-col">
           <p className="mb-2 font-semibold text-indigo-300">
-            2. (Optional) Add an image
+            2. (Optional) Add an image / इमेज जोड़ें
           </p>
           <ImageUploader image={image} setImage={setImage} />
         </div>
