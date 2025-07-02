@@ -1,26 +1,36 @@
-import React, { useState } from 'react'; // <-- Import useState
+import React from 'react'; // <-- Removed useState import as it's no longer used here
 import { ImageUploader } from './ImageUploader';
 
-// Update InputFormProps to include new parameters for onGenerate
+// Update InputFormProps to reflect receiving state and setters from App.tsx
 interface InputFormProps {
   topic: string;
   setTopic: (topic: string) => void;
   image: string | null;
   setImage: (image: string | null) => void;
-  // onGenerate now accepts the selected caption style and length
-  onGenerate: (style: 'basic' | 'professional', length: 'small' | 'big') => void; // <-- UPDATED PROP
+  // NEW PROPS: Receive caption style and length state and setters from parent
+  captionStyle: 'basic' | 'professional';
+  setCaptionStyle: (style: 'basic' | 'professional') => void;
+  captionLength: 'small' | 'big';
+  setCaptionLength: (length: 'small' | 'big') => void;
+  
+  // onGenerate is now a simple trigger, as App.tsx will manage the parameters
+  onGenerate: () => void; // <-- UPDATED PROP: No longer passes style/length here
   isLoading: boolean;
 }
 
-export const InputForm: React.FC<InputFormProps> = ({ topic, setTopic, image, setImage, onGenerate, isLoading }) => {
-  // Add state for the new caption options, with default values
-  const [captionStyle, setCaptionStyle] = useState<'basic' | 'professional'>('basic');
-  const [captionLength, setCaptionLength] = useState<'small' | 'big'>('small');
+export const InputForm: React.FC<InputFormProps> = ({
+  topic, setTopic, image, setImage,
+  // Destructure the new props here
+  captionStyle, setCaptionStyle, captionLength, setCaptionLength,
+  onGenerate, isLoading
+}) => {
+  // REMOVED: No longer manage internal state for captionStyle and captionLength here
+  // const [captionStyle, setCaptionStyle] = useState<'basic' | 'professional'>('basic');
+  // const [captionLength, setCaptionLength] = useState<'small' | 'big'>('small');
 
-  // New handler for the Generate button click
+  // handleGenerateClick now simply calls the onGenerate prop
   const handleGenerateClick = () => {
-    // Pass the current state values to the onGenerate prop
-    onGenerate(captionStyle, captionLength);
+    onGenerate(); // The parent (App.tsx) will handle passing the style/length
   };
 
   return (
@@ -48,20 +58,20 @@ export const InputForm: React.FC<InputFormProps> = ({ topic, setTopic, image, se
         </div>
       </div>
 
-      {/* NEW SECTION: Caption Style Selection */}
-      <div className="mt-6"> {/* Added margin top for spacing */}
+      {/* Caption Style Selection */}
+      <div className="mt-6">
         <p className="mb-2 font-semibold text-indigo-300">
           3. Choose Caption Style:
         </p>
-        <div className="flex flex-wrap gap-4"> {/* Use flexbox for layout */}
+        <div className="flex flex-wrap gap-4">
           <label className="inline-flex items-center text-gray-300">
             <input
               type="radio"
               name="captionStyle"
               value="basic"
               checked={captionStyle === 'basic'}
-              onChange={() => setCaptionStyle('basic')}
-              className="form-radio text-indigo-500 h-4 w-4" // Tailwind CSS for form radio
+              onChange={() => setCaptionStyle('basic')} // Use prop setter
+              className="form-radio text-indigo-500 h-4 w-4"
             />
             <span className="ml-2">Basic</span>
           </label>
@@ -71,7 +81,7 @@ export const InputForm: React.FC<InputFormProps> = ({ topic, setTopic, image, se
               name="captionStyle"
               value="professional"
               checked={captionStyle === 'professional'}
-              onChange={() => setCaptionStyle('professional')}
+              onChange={() => setCaptionStyle('professional')} // Use prop setter
               className="form-radio text-indigo-500 h-4 w-4"
             />
             <span className="ml-2">Professional</span>
@@ -79,19 +89,19 @@ export const InputForm: React.FC<InputFormProps> = ({ topic, setTopic, image, se
         </div>
       </div>
 
-      {/* NEW SECTION: Caption Length Selection */}
-      <div className="mt-4"> {/* Added margin top for spacing */}
+      {/* Caption Length Selection */}
+      <div className="mt-4">
         <p className="mb-2 font-semibold text-indigo-300">
           4. Choose Caption Length:
         </p>
-        <div className="flex flex-wrap gap-4"> {/* Use flexbox for layout */}
+        <div className="flex flex-wrap gap-4">
           <label className="inline-flex items-center text-gray-300">
             <input
               type="radio"
               name="captionLength"
               value="small"
               checked={captionLength === 'small'}
-              onChange={() => setCaptionLength('small')} // Corrected here
+              onChange={() => setCaptionLength('small')} // Use prop setter
               className="form-radio text-indigo-500 h-4 w-4"
             />
             <span className="ml-2">Small</span>
@@ -102,7 +112,7 @@ export const InputForm: React.FC<InputFormProps> = ({ topic, setTopic, image, se
               name="captionLength"
               value="big"
               checked={captionLength === 'big'}
-              onChange={() => setCaptionLength('big')} // Corrected here
+              onChange={() => setCaptionLength('big')} // Use prop setter
               className="form-radio text-indigo-500 h-4 w-4"
             />
             <span className="ml-2">Big</span>
@@ -112,7 +122,7 @@ export const InputForm: React.FC<InputFormProps> = ({ topic, setTopic, image, se
 
       <div className="mt-8 text-center">
         <button
-          onClick={handleGenerateClick} // Call the new handler
+          onClick={handleGenerateClick}
           disabled={isLoading || (!topic && !image)}
           className="w-full md:w-auto px-12 py-4 bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold text-lg rounded-full shadow-lg hover:shadow-xl hover:scale-105 transform transition-all duration-300 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed disabled:scale-100"
         >
