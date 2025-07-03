@@ -3,8 +3,8 @@ import { Header } from './components/Header';
 import { InputForm } from './components/InputForm';
 import { ResultsDisplay } from './components/ResultsDisplay';
 import { LoadingSpinner } from './components/LoadingSpinner';
-import { generateInstagramContent } from './services/geminiService'; // Your service call
-// import type { GeneratedContent } from './types'; // <-- REMOVE THIS LINE
+import { generateInstagramContent } from './services/geminiService';
+import type { GeneratedContent } from './types';
 import { Footer } from './components/Footer';
 import { IntroSection } from './components/IntroSection';
 
@@ -12,22 +12,19 @@ const App: React.FC = () => {
   const [topic, setTopic] = useState<string>('');
   const [image, setImage] = useState<string | null>(null);
 
-  // --- UPDATED STATE FOR LOAD MORE FEATURE ---
-  const [selectedCaptionStyle, setSelectedCaptionStyle] = useState<'basic' | 'professional'>('basic');
-  const [selectedCaptionLength, setSelectedCaptionLength] = useState<'small' | 'big'>('small');
-
+  // KEPT: States for Load More functionality
   const [allGeneratedCaptions, setAllGeneratedCaptions] = useState<string[]>([]);
   const [currentHashtags, setCurrentHashtags] = useState<string[]>([]);
-  // --- REMOVED: generatedContent state is no longer used here ---
-  // const [generatedContent, setGeneratedContent] = useState<GeneratedContent | null>(null);
-  // --- END UPDATED STATE ---
+  // REMOVED: selectedCaptionStyle, setSelectedCaptionStyle, selectedCaptionLength, setSelectedCaptionLength
+  // const [selectedCaptionStyle, setSelectedCaptionStyle] = useState<'basic' | 'professional'>('basic');
+  // const [selectedCaptionLength, setSelectedCaptionLength] = useState<'small' | 'big'>('small');
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
 
-  // handleGenerate for initial content generation
-  const handleGenerate = useCallback(async () => {
+  // handleGenerate for initial content generation - UPDATED: No style/length parameters
+  const handleGenerate = useCallback(async () => { // No longer accepts style/length here directly
     if (!topic && !image) {
       setError('Please provide a topic or an image to generate content.');
       return;
@@ -38,19 +35,20 @@ const App: React.FC = () => {
     setCurrentHashtags([]);     // Clear hashtags for a fresh generation
 
     try {
-      const result = await generateInstagramContent(topic, image, selectedCaptionStyle, selectedCaptionLength);
-      setAllGeneratedCaptions(result.captions); // Set the first batch of captions
-      setCurrentHashtags(result.hashtags);       // Set the hashtags
+      // UPDATED: Call generateInstagramContent WITHOUT style and length parameters
+      const result = await generateInstagramContent(topic, image);
+      setAllGeneratedCaptions(result.captions);
+      setCurrentHashtags(result.hashtags);
     } catch (err) {
       console.error("Error during initial generation:", err);
       setError(err instanceof Error ? err.message : 'An unknown error occurred during initial generation. Please try again.');
     } finally {
       setIsLoading(false);
     }
-  }, [topic, image, selectedCaptionStyle, selectedCaptionLength]);
+  }, [topic, image]); // Dependencies revert to topic and image only
 
 
-  // handleLoadMore for appending captions
+  // handleLoadMore for appending captions - UPDATED: No style/length parameters
   const handleLoadMore = useCallback(async () => {
     if (!topic && !image) {
       setError('Cannot load more content without a topic or image.');
@@ -60,7 +58,8 @@ const App: React.FC = () => {
     setError(null);
 
     try {
-      const result = await generateInstagramContent(topic, image, selectedCaptionStyle, selectedCaptionLength);
+      // UPDATED: Call generateInstagramContent WITHOUT style and length parameters
+      const result = await generateInstagramContent(topic, image);
       setAllGeneratedCaptions(prevCaptions => [...prevCaptions, ...result.captions]);
     } catch (err) {
       console.error("Error during 'Load More' generation:", err);
@@ -68,7 +67,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [topic, image, selectedCaptionStyle, selectedCaptionLength]);
+  }, [topic, image]); // Dependencies revert to topic and image only
 
 
   return (
@@ -76,15 +75,13 @@ const App: React.FC = () => {
       <div className="container mx-auto px-4 py-8 max-w-4xl">
         <Header />
         <main>
+          {/* InputForm props - UPDATED: Removed style/length specific props */}
           <InputForm
             topic={topic}
             setTopic={setTopic}
             image={image}
             setImage={setImage}
-            captionStyle={selectedCaptionStyle}
-            setCaptionStyle={setSelectedCaptionStyle}
-            captionLength={selectedCaptionLength}
-            setCaptionLength={setSelectedCaptionLength}
+            // Removed style/length props
             onGenerate={handleGenerate}
             isLoading={isLoading}
           />
@@ -103,6 +100,7 @@ const App: React.FC = () => {
             </div>
           )}
 
+          {/* ResultsDisplay rendering - KEPT: Uses Load More functionality */}
           {allGeneratedCaptions.length > 0 && !isLoading && !error ? (
             <ResultsDisplay
               content={{ captions: allGeneratedCaptions, hashtags: currentHashtags }}
