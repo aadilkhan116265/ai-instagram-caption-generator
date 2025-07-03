@@ -19,29 +19,30 @@ function buildPrompt(
 
   let prompt = `
     You are an elite, viral content creator and a highly insightful social media marketing assistant specializing in Instagram.
-    Your primary goal is to generate captions that immediately grab attention, evoke strong emotion, and compel interaction. Make the audience say "Wow!"
+    Your primary goal is to generate Instagram captions that are incredibly engaging, highly original, and perfectly suited for the given topic and image. Make the audience say "Wow!"
 
-    Your task is to generate creative and highly engaging content for an Instagram post ${imageContext}.
+    Your task is to generate diverse and compelling content for an Instagram post ${imageContext}.
 
-    // --- ENHANCED GUIDANCE FOR CAPTION QUALITY (For "Wow" Factor) ---
-    Focus on generating captions that are:
-    - **Highly Engaging & Impactful**: Go beyond simple descriptions. Encourage likes, comments, shares, and real conversation.
-    - **Original & Creative**: Avoid clichés and generic phrases. Infuse personality, wit, and genuine emotion. Make them fresh and memorable.
-    - **Descriptive & Evocative**: Paint a vivid picture or convey a deep message. Show, don't just tell.
-    - **Optimized for Instagram's Audience**: Understand what resonates on Instagram (e.g., authenticity, visual appeal, concise yet impactful text).
-    - **Contextually Rich**: Integrate details from the topic and image description seamlessly.
-    - **Appropriate Length & Punch**: Whether short or long, every caption must be interesting and impactful.
-      * For shorter captions, make every word count – concise, witty, or profound. They should grab attention instantly.
-      * For longer captions, structure them well (e.g., mini-story, thought piece, list) and maintain engagement throughout. Break them into readable paragraphs if necessary.
-    - **Emoji Integration**: Integrate 1-3 *perfectly matching* and expressive emojis per caption. Place them strategically (beginning, end, or to highlight key phrases) to enhance the mood and theme of each caption. Ensure they are relevant and add value, not just clutter.
-    `;
+    // --- ENHANCED GUIDANCE FOR CAPTION QUALITY & STRUCTURE ---
+    Please generate 5 unique captions that are highly engaging, impactful, and demonstrate variety in tone and style.
+    Each caption should follow these guidelines:
+    - **Originality & Creativity**: Avoid clichés and generic phrases. Infuse personality, wit, and genuine emotion. Make them fresh and memorable.
+    - **Descriptive & Evocative**: Paint a vivid picture or convey a deep message relevant to the topic. Show, don't just tell.
+    - **Emoji Integration**: Integrate 1-3 *perfectly fitting* and expressive emojis per caption. Emojis should complement the caption's mood, tone, and message, making it more visually appealing and impactful.
+    - **Conciseness & Impact**: Every caption, regardless of its specific style, must be impactful. If short, make every word count. If longer, ensure it's well-structured and engaging throughout.
+    - **Call to Action (Optional)**: Some captions can include a subtle call-to-action to encourage interaction (e.g., asking a question).
 
-  prompt += `
+    Aim to provide a variety across the 5 captions, covering some of these styles/lengths:
+    - **Short & Punchy**: 5-10 words, designed for immediate impact.
+    - **Engaging Question**: A question-based caption to spark comments.
+    - **Reflective/Inspirational**: A caption that shares a thought or inspires.
+    - **Descriptive Narrative**: A slightly longer caption that tells a mini-story or provides more context.
+    - **Witty/Humorous**: A playful or funny caption.
 
     Topic: "${topic || (hasImage ? 'Describe the main subject and mood of the image.' : 'General post')}"
 
     Please provide the following in a JSON object format:
-    1.  "captions": An array of 5 unique, well-written, and highly engaging captions. Each caption must have a **distinctly different tone and approach** (e.g., witty, inspirational, questioning, descriptive, minimalist, call-to-action, storytelling, humorous, reflective, empowering).
+    1.  "captions": An array of exactly 5 unique, well-written, and engaging captions, adhering to the diverse styles and qualities outlined above.
     2.  "hashtags": An array of 20 highly relevant and trending hashtags. Mix popular, niche, and specific hashtags to maximize discoverability.
 
     The final output MUST be a valid JSON object. Do not include any text or markdown formatting before or after the JSON object.
@@ -49,11 +50,11 @@ function buildPrompt(
     Example JSON structure:
     {
       "captions": [
-        "Caption 1...",
-        "Caption 2...",
-        "Caption 3...",
-        "Caption 4...",
-        "Caption 5..."
+        "Caption 1: [Short & Punchy] text with emoji ⚡️",
+        "Caption 2: [Engaging Question] text with emoji 🤔",
+        "Caption 3: [Reflective/Inspirational] text with emoji ✨",
+        "Caption 4: [Descriptive Narrative] text with emoji 📸",
+        "Caption 5: [Witty/Humorous] text with emoji 😂"
       ],
       "hashtags": [
         "#hashtag1",
