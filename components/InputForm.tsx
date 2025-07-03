@@ -1,27 +1,23 @@
 import React from 'react';
 import { ImageUploader } from './ImageUploader';
 
-// REVERTED: InputFormProps interface - removed captionStyle and captionLength props
+// UPDATED: InputFormProps interface - removed style/length specific props
 interface InputFormProps {
   topic: string;
   setTopic: (topic: string) => void;
   image: string | null;
   setImage: (image: string | null) => void;
-  // onGenerate is a simple trigger, as it was originally
+  // onGenerate is a simple trigger as it was before style/length options were introduced
   onGenerate: () => void;
   isLoading: boolean;
 }
 
 export const InputForm: React.FC<InputFormProps> = ({
   topic, setTopic, image, setImage,
-  // REVERTED: Removed captionStyle, setCaptionStyle, captionLength, setCaptionLength from destructuring
+  // Removed destructuring for captionStyle, setCaptionStyle, captionLength, setCaptionLength
   onGenerate, isLoading
 }) => {
-  // REVERTED: Removed internal state for captionStyle and captionLength if it was here
-  // const [captionStyle, setCaptionStyle] = useState<'basic' | 'professional'>('basic');
-  // const [captionLength, setCaptionLength] = useState<'small' | 'big'>('small');
-
-  // handleGenerateClick remains a simple call to onGenerate
+  // handleGenerateClick now simply calls the onGenerate prop
   const handleGenerateClick = () => {
     onGenerate();
   };
@@ -51,71 +47,8 @@ export const InputForm: React.FC<InputFormProps> = ({
         </div>
       </div>
 
-      {/* REVERTED: Removed entire section for Caption Style Selection */}
-      {/*
-      <div className="mt-6">
-        <p className="mb-2 font-semibold text-indigo-300">
-          3. Choose Caption Style:
-        </p>
-        <div className="flex flex-wrap gap-4">
-          <label className="inline-flex items-center text-gray-300">
-            <input
-              type="radio"
-              name="captionStyle"
-              value="basic"
-              checked={captionStyle === 'basic'}
-              onChange={() => setCaptionStyle('basic')}
-              className="form-radio text-indigo-500 h-4 w-4"
-            />
-            <span className="ml-2">Basic</span>
-          </label>
-          <label className="inline-flex items-center text-gray-300">
-            <input
-              type="radio"
-              name="captionStyle"
-              value="professional"
-              checked={captionStyle === 'professional'}
-              onChange={() => setCaptionStyle('professional')}
-              className="form-radio text-indigo-500 h-4 w-4"
-            />
-            <span className="ml-2">Professional</span>
-          </label>
-        </div>
-      </div>
-      */}
-
-      {/* REVERTED: Removed entire section for Caption Length Selection */}
-      {/*
-      <div className="mt-4">
-        <p className="mb-2 font-semibold text-indigo-300">
-          4. Choose Caption Length:
-        </p>
-        <div className="flex flex-wrap gap-4">
-          <label className="inline-flex items-center text-gray-300">
-            <input
-              type="radio"
-              name="captionLength"
-              value="small"
-              checked={captionLength === 'small'}
-              onChange={() => setCaptionLength('small')}
-              className="form-radio text-indigo-500 h-4 w-4"
-            />
-            <span className="ml-2">Small</span>
-          </label>
-          <label className="inline-flex items-center text-gray-300">
-            <input
-              type="radio"
-              name="captionLength"
-              value="big"
-              checked={captionLength === 'big'}
-              onChange={() => setCaptionLength('big')}
-              className="form-radio text-indigo-500 h-4 w-4"
-            />
-            <span className="ml-2">Big</span>
-          </label>
-        </div>
-      </div>
-      */}
+      {/* REMOVED: Entire section for Caption Style Selection */}
+      {/* REMOVED: Entire section for Caption Length Selection */}
 
       <div className="mt-8 text-center">
         <button
