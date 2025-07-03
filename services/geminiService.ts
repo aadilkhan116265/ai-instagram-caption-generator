@@ -8,41 +8,41 @@ if (!import.meta.env.VITE_API_KEY) {
 
 const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
 
-// UPDATED: buildPrompt now only accepts topic and hasImage
+// UPDATED: buildPrompt to enhance caption quality for "wow factor"
 function buildPrompt(
   topic: string,
-  hasImage: boolean // REMOVED: captionStyle, captionLength
+  hasImage: boolean
 ): string {
   const imageContext = hasImage
     ? "based on the provided image and the topic below"
     : "based on the topic below";
 
   let prompt = `
-    You are an expert social media marketing assistant specializing in Instagram.
-    Your task is to generate creative and engaging content for an Instagram post ${imageContext}.
+    You are an elite, viral content creator and a highly insightful social media marketing assistant specializing in Instagram.
+    Your primary goal is to generate captions that immediately grab attention, evoke strong emotion, and compel interaction. Make the audience say "Wow!"
 
-    // --- GENERAL GUIDANCE FOR CAPTION QUALITY (As preferred previously) ---
+    Your task is to generate creative and highly engaging content for an Instagram post ${imageContext}.
+
+    // --- ENHANCED GUIDANCE FOR CAPTION QUALITY (For "Wow" Factor) ---
     Focus on generating captions that are:
-    - Highly engaging, encouraging likes, comments, and shares.
-    - Descriptive, painting a vivid picture or conveying a clear message.
-    - Optimized for Instagram's tone and audience.
-    - Thought-provoking, inspiring, or entertaining.
-    - Integrate 1-3 highly relevant emojis per caption, ideally at the beginning or end, or to highlight key phrases. Ensure they enhance the message and fit the overall tone.
+    - **Highly Engaging & Impactful**: Go beyond simple descriptions. Encourage likes, comments, shares, and real conversation.
+    - **Original & Creative**: Avoid clichés and generic phrases. Infuse personality, wit, and genuine emotion. Make them fresh and memorable.
+    - **Descriptive & Evocative**: Paint a vivid picture or convey a deep message. Show, don't just tell.
+    - **Optimized for Instagram's Audience**: Understand what resonates on Instagram (e.g., authenticity, visual appeal, concise yet impactful text).
+    - **Contextually Rich**: Integrate details from the topic and image description seamlessly.
+    - **Appropriate Length & Punch**: Whether short or long, every caption must be interesting and impactful.
+      * For shorter captions, make every word count – concise, witty, or profound. They should grab attention instantly.
+      * For longer captions, structure them well (e.g., mini-story, thought piece, list) and maintain engagement throughout. Break them into readable paragraphs if necessary.
+    - **Emoji Integration**: Integrate 1-3 *perfectly matching* and expressive emojis per caption. Place them strategically (beginning, end, or to highlight key phrases) to enhance the mood and theme of each caption. Ensure they are relevant and add value, not just clutter.
     `;
-
-  // REMOVED: Conditional logic for captionStyle and captionLength
-  // if (captionStyle === 'professional') { ... }
-  // else { ... }
-  // if (captionLength === 'small') { ... }
-  // else { ... }
 
   prompt += `
 
     Topic: "${topic || (hasImage ? 'Describe the main subject and mood of the image.' : 'General post')}"
 
     Please provide the following in a JSON object format:
-    1.  "captions": An array of 5 unique, well-written, and engaging captions. Each caption should have a different tone (e.g., witty, inspirational, questioning, descriptive, minimalist, call-to-action).
-    2.  "hashtags": An array of 20 relevant hashtags. Mix popular, niche, and specific hashtags.
+    1.  "captions": An array of 5 unique, well-written, and highly engaging captions. Each caption must have a **distinctly different tone and approach** (e.g., witty, inspirational, questioning, descriptive, minimalist, call-to-action, storytelling, humorous, reflective, empowering).
+    2.  "hashtags": An array of 20 highly relevant and trending hashtags. Mix popular, niche, and specific hashtags to maximize discoverability.
 
     The final output MUST be a valid JSON object. Do not include any text or markdown formatting before or after the JSON object.
 
@@ -68,9 +68,9 @@ function buildPrompt(
 // UPDATED: generateInstagramContent now only accepts topic and imageBase64
 export const generateInstagramContent = async (
   topic: string,
-  imageBase64: string | null // REMOVED: captionStyle, captionLength
+  imageBase64: string | null
 ): Promise<GeneratedContent> => {
-  // UPDATED: Pass only topic and hasImage to buildPrompt
+  // Pass only topic and hasImage to buildPrompt
   const prompt = buildPrompt(topic, !!imageBase64);
 
   const contents = [];
@@ -93,8 +93,8 @@ export const generateInstagramContent = async (
       contents: { parts: contents },
       config: {
         responseMimeType: "application/json",
-        temperature: 0.8,
-        topP: 0.95,
+        temperature: 0.8, // You might experiment with this, higher means more creative/random
+        topP: 0.95,       // Controls diversity of words, higher means more diverse
       },
     });
 
@@ -102,6 +102,7 @@ export const generateInstagramContent = async (
     if (!rawText) throw new Error("No response text received from AI.");
     let jsonStr = rawText;
 
+    // Remove triple backticks if present (common for JSON responses from AI)
     const fenceRegex = /^```(\w*)?\s*\n?(.*?)\n?\s*```$/s;
     const match = jsonStr.match(fenceRegex);
     if (match && match[2]) {
