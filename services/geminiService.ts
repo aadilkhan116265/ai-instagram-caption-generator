@@ -8,12 +8,10 @@ if (!import.meta.env.VITE_API_KEY) {
 
 const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
 
-// UPDATED: buildPrompt now accepts captionStyle and captionLength
+// UPDATED: buildPrompt now only accepts topic and hasImage
 function buildPrompt(
   topic: string,
-  hasImage: boolean,
-  captionStyle: 'basic' | 'professional',
-  captionLength: 'small' | 'big'
+  hasImage: boolean // REMOVED: captionStyle, captionLength
 ): string {
   const imageContext = hasImage
     ? "based on the provided image and the topic below"
@@ -23,34 +21,27 @@ function buildPrompt(
     You are an expert social media marketing assistant specializing in Instagram.
     Your task is to generate creative and engaging content for an Instagram post ${imageContext}.
 
-    // --- GUIDANCE FOR CAPTION QUALITY (Suggested Improvements) ---
+    // --- GENERAL GUIDANCE FOR CAPTION QUALITY (As preferred previously) ---
     Focus on generating captions that are:
     - Highly engaging, encouraging likes, comments, and shares.
     - Descriptive, painting a vivid picture or conveying a clear message.
     - Optimized for Instagram's tone and audience.
     - Thought-provoking, inspiring, or entertaining.
-    - Each caption MUST include 1-3 highly relevant and expressive emojis. Place them strategically at the beginning, end, or within the text to enhance the message and fit the overall tone.
+    - Integrate 1-3 highly relevant emojis per caption, ideally at the beginning or end, or to highlight key phrases. Ensure they enhance the message and fit the overall tone.
     `;
 
-  // Add style preference to the prompt based on the new parameter
-  if (captionStyle === 'professional') {
-  prompt += ` The caption should maintain a refined, intelligent tone. It must be appropriate for professionals, students, or individuals aiming to share thoughtful or inspiring content. Use elevated vocabulary and sentence structure, but keep it readable and relatable. Avoid promotional or corporate-sounding language.`;
-} else { // 'basic'
-  prompt += ` The caption should be casual, personal, and easy to understand. Use simple everyday language suitable for general Instagram users sharing personal photos. Keep the tone warm, natural, and relatable.`;
-}
-
-if (captionLength === 'small') {
-  prompt += ` Each caption must be very short — ideally a single phrase or sentence of no more than 5 to 6 words. Keep it catchy, but concise.`;
-} else { // 'big'
-  prompt += ` Each caption should be more detailed and expressive, consisting of multiple sentences if needed. Ensure smooth flow and emotional engagement while keeping the text easy to read.`;
-}
+  // REMOVED: Conditional logic for captionStyle and captionLength
+  // if (captionStyle === 'professional') { ... }
+  // else { ... }
+  // if (captionLength === 'small') { ... }
+  // else { ... }
 
   prompt += `
 
     Topic: "${topic || (hasImage ? 'Describe the main subject and mood of the image.' : 'General post')}"
 
     Please provide the following in a JSON object format:
-    1.  "captions": An array of 5 unique, well-written, and engaging captions. Each caption should have a different tone. Explicitly ensure the tones are distinct (e.g., witty, inspirational, questioning, descriptive, minimalist, call-to-action).
+    1.  "captions": An array of 5 unique, well-written, and engaging captions. Each caption should have a different tone (e.g., witty, inspirational, questioning, descriptive, minimalist, call-to-action).
     2.  "hashtags": An array of 20 relevant hashtags. Mix popular, niche, and specific hashtags.
 
     The final output MUST be a valid JSON object. Do not include any text or markdown formatting before or after the JSON object.
@@ -74,23 +65,21 @@ if (captionLength === 'small') {
   return prompt;
 }
 
-// UPDATED: generateInstagramContent now accepts style and length
+// UPDATED: generateInstagramContent now only accepts topic and imageBase64
 export const generateInstagramContent = async (
   topic: string,
-  imageBase64: string | null,
-  captionStyle: 'basic' | 'professional',
-  captionLength: 'small' | 'big'
+  imageBase64: string | null // REMOVED: captionStyle, captionLength
 ): Promise<GeneratedContent> => {
-  // Pass the new parameters to buildPrompt
-  const prompt = buildPrompt(topic, !!imageBase64, captionStyle, captionLength);
+  // UPDATED: Pass only topic and hasImage to buildPrompt
+  const prompt = buildPrompt(topic, !!imageBase64);
 
   const contents = [];
 
   if (imageBase64) {
     const imagePart = {
       inlineData: {
-        mimeType: 'image/jpeg', // Adjust if other image types are supported
-        data: imageBase64.split(',')[1], // Remove base64 prefix
+        mimeType: 'image/jpeg',
+        data: imageBase64.split(',')[1],
       },
     };
     contents.push(imagePart);
@@ -109,12 +98,10 @@ export const generateInstagramContent = async (
       },
     });
 
-    // ✅ Handle possible undefined response
     const rawText = response.text?.trim();
     if (!rawText) throw new Error("No response text received from AI.");
     let jsonStr = rawText;
 
-    // Remove triple backticks if present
     const fenceRegex = /^```(\w*)?\s*\n?(.*?)\n?\s*```$/s;
     const match = jsonStr.match(fenceRegex);
     if (match && match[2]) {
@@ -134,7 +121,6 @@ export const generateInstagramContent = async (
     if (error instanceof Error && error.message.includes("JSON")) {
       throw new Error("Failed to parse the AI's response. The format was invalid. Please try again.");
     }
-    // Updated error message to be more generic
     throw new Error("Failed to generate content. Please try again or check your internet connection.");
   }
 };
