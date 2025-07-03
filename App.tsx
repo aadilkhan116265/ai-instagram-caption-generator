@@ -4,7 +4,6 @@ import { InputForm } from './components/InputForm';
 import { ResultsDisplay } from './components/ResultsDisplay';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { generateInstagramContent } from './services/geminiService';
-import type { GeneratedContent } from './types';
 import { Footer } from './components/Footer';
 import { IntroSection } from './components/IntroSection';
 
