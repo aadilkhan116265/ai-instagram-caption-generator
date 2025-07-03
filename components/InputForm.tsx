@@ -1,36 +1,29 @@
-import React from 'react'; // <-- Removed useState import as it's no longer used here
+import React from 'react';
 import { ImageUploader } from './ImageUploader';
 
-// Update InputFormProps to reflect receiving state and setters from App.tsx
+// REVERTED: InputFormProps interface - removed captionStyle and captionLength props
 interface InputFormProps {
   topic: string;
   setTopic: (topic: string) => void;
   image: string | null;
   setImage: (image: string | null) => void;
-  // NEW PROPS: Receive caption style and length state and setters from parent
-  captionStyle: 'basic' | 'professional';
-  setCaptionStyle: (style: 'basic' | 'professional') => void;
-  captionLength: 'small' | 'big';
-  setCaptionLength: (length: 'small' | 'big') => void;
-  
-  // onGenerate is now a simple trigger, as App.tsx will manage the parameters
-  onGenerate: () => void; // <-- UPDATED PROP: No longer passes style/length here
+  // onGenerate is a simple trigger, as it was originally
+  onGenerate: () => void;
   isLoading: boolean;
 }
 
 export const InputForm: React.FC<InputFormProps> = ({
   topic, setTopic, image, setImage,
-  // Destructure the new props here
-  captionStyle, setCaptionStyle, captionLength, setCaptionLength,
+  // REVERTED: Removed captionStyle, setCaptionStyle, captionLength, setCaptionLength from destructuring
   onGenerate, isLoading
 }) => {
-  // REMOVED: No longer manage internal state for captionStyle and captionLength here
+  // REVERTED: Removed internal state for captionStyle and captionLength if it was here
   // const [captionStyle, setCaptionStyle] = useState<'basic' | 'professional'>('basic');
   // const [captionLength, setCaptionLength] = useState<'small' | 'big'>('small');
 
-  // handleGenerateClick now simply calls the onGenerate prop
+  // handleGenerateClick remains a simple call to onGenerate
   const handleGenerateClick = () => {
-    onGenerate(); // The parent (App.tsx) will handle passing the style/length
+    onGenerate();
   };
 
   return (
@@ -58,7 +51,8 @@ export const InputForm: React.FC<InputFormProps> = ({
         </div>
       </div>
 
-      {/* Caption Style Selection */}
+      {/* REVERTED: Removed entire section for Caption Style Selection */}
+      {/*
       <div className="mt-6">
         <p className="mb-2 font-semibold text-indigo-300">
           3. Choose Caption Style:
@@ -70,7 +64,7 @@ export const InputForm: React.FC<InputFormProps> = ({
               name="captionStyle"
               value="basic"
               checked={captionStyle === 'basic'}
-              onChange={() => setCaptionStyle('basic')} // Use prop setter
+              onChange={() => setCaptionStyle('basic')}
               className="form-radio text-indigo-500 h-4 w-4"
             />
             <span className="ml-2">Basic</span>
@@ -81,15 +75,17 @@ export const InputForm: React.FC<InputFormProps> = ({
               name="captionStyle"
               value="professional"
               checked={captionStyle === 'professional'}
-              onChange={() => setCaptionStyle('professional')} // Use prop setter
+              onChange={() => setCaptionStyle('professional')}
               className="form-radio text-indigo-500 h-4 w-4"
             />
             <span className="ml-2">Professional</span>
           </label>
         </div>
       </div>
+      */}
 
-      {/* Caption Length Selection */}
+      {/* REVERTED: Removed entire section for Caption Length Selection */}
+      {/*
       <div className="mt-4">
         <p className="mb-2 font-semibold text-indigo-300">
           4. Choose Caption Length:
@@ -101,7 +97,7 @@ export const InputForm: React.FC<InputFormProps> = ({
               name="captionLength"
               value="small"
               checked={captionLength === 'small'}
-              onChange={() => setCaptionLength('small')} // Use prop setter
+              onChange={() => setCaptionLength('small')}
               className="form-radio text-indigo-500 h-4 w-4"
             />
             <span className="ml-2">Small</span>
@@ -112,13 +108,14 @@ export const InputForm: React.FC<InputFormProps> = ({
               name="captionLength"
               value="big"
               checked={captionLength === 'big'}
-              onChange={() => setCaptionLength('big')} // Use prop setter
+              onChange={() => setCaptionLength('big')}
               className="form-radio text-indigo-500 h-4 w-4"
             />
             <span className="ml-2">Big</span>
           </label>
         </div>
       </div>
+      */}
 
       <div className="mt-8 text-center">
         <button
