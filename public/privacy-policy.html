@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Privacy Policy | AI Instagram Caption Generator</title>
+    
+    <!-- Placeholder Comments -->
+    <!-- Chosen Palette: Calm Neutral -->
+    <!-- Application Structure Plan: A single-page layout with interactive top navigation cards linked to themed sections (e.g., "What We Collect", "Your Rights"). Each section uses plain English questions as headers and expandable accordions for details to improve readability and reduce cognitive load. The user flow is: user lands, sees high-level themes, clicks a theme, reads a summary, and can expand for details. This is better than a long, static legal document because it's guided and less intimidating. -->
+    <!-- Visualization & Content Choices: 
+        - "Information We Collect" -> Goal: Inform -> Presentation: Icon + Title + Expandable Accordion -> Interaction: Click to expand/collapse -> Justification: Breaks down a dense list into manageable chunks.
+        - "How We Use Your Information" -> Goal: Inform -> Presentation: Icon + Titled list items -> Interaction: Static reading -> Justification: This section is short and clear enough for direct presentation.
+        - "How Your Information is Shared" -> Goal: Inform -> Presentation: Icon + Titled list with descriptions -> Interaction: Static reading -> Justification: Clearly outlines third-party involvement.
+        - "Your Data Protection Rights" -> Goal: Inform -> Presentation: Expandable Accordion -> Interaction: Click to expand/collapse -> Justification: Hides a long list of legal rights until the user explicitly requests to see them.
+        - Library/Method: All will be done with HTML, Tailwind CSS, and Vanilla JS for the interactive elements. No Chart.js/Plotly.js needed as there is no quantitative data.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .nav-card {
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .nav-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-content.open {
+            max-height: 500px; /* Adjust as needed */
+        }
+        .accordion-icon {
+            transition: transform 0.3s ease-in-out;
+        }
+        .accordion-button.open .accordion-icon {
+            transform: rotate(45deg);
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+
+        <!-- Header -->
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-900">Privacy, Made Clear</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">An easy-to-understand overview of the Privacy Policy for the AI Instagram Caption Generator app.</p>
+            <p class="mt-2 text-sm text-gray-500">Effective Date: July 7, 2025</p>
+        </header>
+
+        <!-- Interactive Navigation -->
+        <nav class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mb-16">
+            <a href="#what-we-collect" class="nav-card bg-white p-6 rounded-xl shadow-md text-center block border border-gray-200">
+                <div class="text-4xl mb-3 text-blue-500">📥</div>
+                <h2 class="font-semibold text-gray-800">What We Collect</h2>
+            </a>
+            <a href="#how-we-use" class="nav-card bg-white p-6 rounded-xl shadow-md text-center block border border-gray-200">
+                <div class="text-4xl mb-3 text-green-500">⚙️</div>
+                <h2 class="font-semibold text-gray-800">How We Use It</h2>
+            </a>
+            <a href="#who-we-share-with" class="nav-card bg-white p-6 rounded-xl shadow-md text-center block border border-gray-200">
+                <div class="text-4xl mb-3 text-purple-500">🤝</div>
+                <h2 class="font-semibold text-gray-800">Who We Share With</h2>
+            </a>
+            <a href="#your-rights" class="nav-card bg-white p-6 rounded-xl shadow-md text-center block border border-gray-200">
+                <div class="text-4xl mb-3 text-yellow-500">🛡️</div>
+                <h2 class="font-semibold text-gray-800">Your Rights & Security</h2>
+            </a>
+        </nav>
+
+        <!-- Main Content Sections -->
+        <main class="space-y-16">
+
+            <!-- Section 1: What We Collect -->
+            <section id="what-we-collect" class="p-8 bg-white rounded-2xl shadow-lg border border-gray-200">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What information do we collect?</h2>
+                <p class="text-lg text-gray-600 mb-8">To provide and improve our service, we collect a few types of information. We've broken them down for you below.</p>
+                
+                <div class="space-y-4">
+                    <!-- Accordion Item 1 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800">
+                            <span>Information You Provide Directly</span>
+                            <span class="accordion-icon text-blue-500 text-3xl font-light">+</span>
+                        </button>
+                        <div class="accordion-content px-5">
+                            <ul class="list-disc list-inside pb-5 space-y-2 text-gray-600">
+                                <li><strong>Text Descriptions:</strong> When you "Describe your post," we collect the text you enter to generate captions.</li>
+                                <li><strong>Image Uploads:</strong> When you "Add an image," we collect the photo data from your device's camera or gallery to help generate relevant content.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Accordion Item 2 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800">
+                            <span>Information Collected Automatically</span>
+                            <span class="accordion-icon text-blue-500 text-3xl font-light">+</span>
+                        </button>
+                        <div class="accordion-content px-5">
+                             <ul class="list-disc list-inside pb-5 space-y-2 text-gray-600">
+                                <li><strong>IP Address:</strong> Your device's unique address on the internet.</li>
+                                <li><strong>Device Information:</strong> Type of device, operating system, and browser used.</li>
+                                <li><strong>Usage Data:</strong> Basic information about how you interact with the app, like features used or time spent.</li>
+                            </ul>
+                        </div>
+                    </div>
+                     <!-- Accordion Item 3 -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800">
+                            <span>Permissions Requested by the App</span>
+                            <span class="accordion-icon text-blue-500 text-3xl font-light">+</span>
+                        </button>
+                        <div class="accordion-content px-5">
+                             <ul class="list-disc list-inside pb-5 space-y-2 text-gray-600">
+                                <li><strong>Camera:</strong> To allow you to take new photos for upload.</li>
+                                <li><strong>Read Media/Storage:</strong> To allow you to select existing photos from your device's gallery.</li>
+                                <li><strong>Internet/Network State:</strong> To connect to our web service and the AI models.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 2: How We Use It -->
+            <section id="how-we-use" class="p-8 bg-white rounded-2xl shadow-lg border border-gray-200">
+                 <h2 class="text-3xl font-bold text-gray-900 mb-6">How do we use your information?</h2>
+                 <p class="text-lg text-gray-600 mb-8">We use the information we collect for three main purposes, always with the goal of providing a great service.</p>
+                 <div class="grid md:grid-cols-3 gap-6 text-center">
+                    <div class="p-4">
+                        <div class="text-5xl mb-3 text-green-500">💡</div>
+                        <h3 class="text-xl font-bold mb-2">To Generate Content</h3>
+                        <p class="text-gray-600">Your text and images are sent to our AI to create the captions and hashtags you requested.</p>
+                    </div>
+                    <div class="p-4">
+                        <div class="text-5xl mb-3 text-green-500">📈</div>
+                        <h3 class="text-xl font-bold mb-2">To Improve the App</h3>
+                        <p class="text-gray-600">We analyze anonymized usage data to understand what features are popular and how we can make the app better.</p>
+                    </div>
+                     <div class="p-4">
+                        <div class="text-5xl mb-3 text-green-500">🔒</div>
+                        <h3 class="text-xl font-bold mb-2">To Ensure Security</h3>
+                        <p class="text-gray-600">We monitor for technical issues and security threats to keep the service safe and reliable.</p>
+                    </div>
+                 </div>
+            </section>
+
+            <!-- Section 3: Who We Share With -->
+            <section id="who-we-share-with" class="p-8 bg-white rounded-2xl shadow-lg border border-gray-200">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">Who do we share your information with?</h2>
+                <p class="text-lg text-gray-600 mb-8">We limit data sharing to the essential third-party services that power our app. We do not sell your personal data.</p>
+                <div class="space-y-6">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">With Google Gemini API</h3>
+                        <p class="text-gray-600">The text and image data you provide for caption generation are sent to Google's Gemini API for processing. This data is processed transiently (we don't store it) and is subject to Google's privacy policy.</p>
+                    </div>
+                     <div>
+                        <h3 class="text-xl font-bold mb-2">With Vercel</h3>
+                        <p class="text-gray-600">Our web application is hosted on Vercel. Standard server logs and analytics may be processed by Vercel as part of their hosting services.</p>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2">For Legal Reasons or Business Transfers</h3>
+                        <p class="text-gray-600">We may disclose your information if required by law or in the event of a merger or acquisition. We will notify you if your data becomes subject to a different privacy policy.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 4: Your Rights -->
+            <section id="your-rights" class="p-8 bg-white rounded-2xl shadow-lg border border-gray-200">
+                <h2 class="text-3xl font-bold text-gray-900 mb-6">What are your rights and how is your data secured?</h2>
+                <p class="text-lg text-gray-600 mb-8">We take your data security and rights seriously. Here’s a summary of our approach and your rights.</p>
+                <div class="space-y-4">
+                     <!-- Accordion Item -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800">
+                            <span>Data Retention & Security</span>
+                            <span class="accordion-icon text-yellow-500 text-3xl font-light">+</span>
+                        </button>
+                        <div class="accordion-content px-5">
+                             <p class="py-4 text-gray-600">We do not store your text prompts or images long-term. They are processed transiently to generate your content. We implement reasonable security measures to protect the data while it's being handled. However, no internet transmission is 100% secure.</p>
+                        </div>
+                    </div>
+                     <!-- Accordion Item -->
+                    <div class="border border-gray-200 rounded-lg">
+                        <button class="accordion-button w-full flex justify-between items-center p-5 text-left font-semibold text-lg text-gray-800">
+                            <span>Your Data Protection Rights</span>
+                            <span class="accordion-icon text-yellow-500 text-3xl font-light">+</span>
+                        </button>
+                        <div class="accordion-content px-5">
+                             <p class="py-4 text-gray-600">Depending on your location, you may have the right to access, update, delete, or restrict the processing of your personal data. To exercise any of these rights, please contact us.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="mt-16 pt-8 border-t border-gray-200 text-center text-gray-500">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Contact Us</h3>
+            <p>If you have any questions about this Privacy Policy, please reach out to us.</p>
+            <p class="mt-2">
+                <a href="mailto:aadinapps@gmail.com" class="text-blue-600 hover:underline">support@instacaptionai.com</a>
+            </p>
+            <p class="mt-8 text-sm">&copy; 2025 AI Instagram Caption Generator. All Rights Reserved.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const accordionButtons = document.querySelectorAll('.accordion-button');
+
+            accordionButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const content = button.nextElementSibling;
+                    const isOpen = button.classList.contains('open');
+
+                    // Close all other accordions in the same section
+                    button.closest('section').querySelectorAll('.accordion-button').forEach(otherButton => {
+                        if (otherButton !== button) {
+                            otherButton.classList.remove('open');
+                            otherButton.nextElementSibling.classList.remove('open');
+                            otherButton.nextElementSibling.style.maxHeight = null;
+                        }
+                    });
+
+                    // Toggle the clicked accordion
+                    button.classList.toggle('open', !isOpen);
+                    content.classList.toggle('open', !isOpen);
+
+                    if (!isOpen) {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    } else {
+                        content.style.maxHeight = null;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
